@@ -22,11 +22,11 @@ public class FakeApi {
     public static FakeApi getInstance(){
         if(instance == null){
             instance = new FakeApi();
-            ProductUtil.initReviews();
-            instance.products.add(ProductUtil.product1);
-            instance.products.add(ProductUtil.product2);
-            instance.products.add(ProductUtil.product3);
-            instance.products.add(ProductUtil.product4);
+//            ProductUtil.initReviews();
+//            instance.products.add(ProductUtil.product1);
+//            instance.products.add(ProductUtil.product2);
+//            instance.products.add(ProductUtil.product3);
+//            instance.products.add(ProductUtil.product4);
         }
 
         return instance;

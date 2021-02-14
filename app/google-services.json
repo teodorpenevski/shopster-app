@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "392815909846",
+    "firebase_url": "https://shopster-c4676-default-rtdb.firebaseio.com",
+    "project_id": "shopster-c4676",
+    "storage_bucket": "shopster-c4676.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392815909846:android:42577a46e988b26cd3e277",
+        "android_client_info": {
+          "package_name": "com.example.shopster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392815909846-hnqm3vddeglei0e0g5u96d7t7kc6o8nc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWu3L4Oj841XguXtPux6HqiAPOV1qJ1nI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392815909846-hnqm3vddeglei0e0g5u96d7t7kc6o8nc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392815909846:android:58614a974426264bd3e277",
+        "android_client_info": {
+          "package_name": "com.thp.shopster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392815909846-hnqm3vddeglei0e0g5u96d7t7kc6o8nc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWu3L4Oj841XguXtPux6HqiAPOV1qJ1nI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392815909846-hnqm3vddeglei0e0g5u96d7t7kc6o8nc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

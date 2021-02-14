@@ -1,5 +1,6 @@
 package com.example.shopster.model.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shopster.R;
 import com.example.shopster.model.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -63,6 +65,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         public void bindData(final Product product) {
             nameProduct.setText(product.getName());
             priceProduct.setText(String.valueOf(product.getPrice()) + "$");
+            Picasso.get()
+                    .load(product.getImageURL().get(0))
+                    .fit()
+                    .centerCrop()
+                    .into(imageProduct);
 
             itemView.findViewById(R.id.card).setOnClickListener(new View.OnClickListener() {
                 @Override
