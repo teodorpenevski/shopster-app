@@ -3,10 +3,15 @@ package com.example.shopster;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -20,12 +25,13 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        BottomNavigationView navView2 = findViewById(R.id.nav_view2);
+        LinearLayout buttonBar = findViewById(R.id.button_bar_buy_add);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
@@ -37,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if(destination.getId() == R.id.productDetailsFragment){
                     navView.setVisibility(View.GONE);
-                    navView2.setVisibility(View.VISIBLE);
+                    buttonBar.setVisibility(View.VISIBLE);
                 }
                 else{
-                    navView2.setVisibility(View.GONE);
                     navView.setVisibility(View.VISIBLE);
+                    buttonBar.setVisibility(View.GONE);
                 }
             }
         });
@@ -56,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
 
         }
+
+
+
     }
+
+
 
 }
