@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,18 +23,36 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.shopster.LoginActivity;
 import com.example.shopster.MainActivity;
 import com.example.shopster.MainActivity2;
 import com.example.shopster.R;
 import com.example.shopster.ui.home.HomeFragment;
 import com.example.shopster.ui.notifications.NotificationsFragment;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AccountFragment extends Fragment {
 
+    private FirebaseAuth mAuth;
     private ProductDetailsViewModel productDetailsViewModel;
+    private View view;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            view.findViewById(R.id.btnLogin).setVisibility(View.GONE);
+        }
+        else{
+            view.findViewById(R.id.btnLogin).setVisibility(View.VISIBLE);
+
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
         productDetailsViewModel =
                 new ViewModelProvider(this).get(ProductDetailsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
@@ -44,13 +63,33 @@ public class AccountFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        view = root;
         return root;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mAuth.getCurrentUser() != null){
+                    Toast.makeText(getContext(), "Already logged in!", Toast.LENGTH_SHORT).show();
+                }
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+        });
 
+        view.findViewById(R.id.btnLogout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                LoginManager.getInstance().logOut();
+                Toast.makeText(getContext(), "Logged out successfully!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+        });
 //        createNotificationChannel();
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -103,6 +142,7 @@ public class AccountFragment extends Fragment {
 // notificationId is a unique int for each notification that you must define
         NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notification);
+
     }
 
 
