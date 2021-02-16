@@ -39,6 +39,13 @@
                 android:text="TextView"
                 android:textSize="18sp" />
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@drawable/favorite_icon" />
+
             <TextView
                 android:id="@+id/txtProductName"
                 android:layout_width="wrap_content"

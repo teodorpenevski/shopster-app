@@ -49,8 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -123,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                 registerWithEMail(email, password);
             }
         });
+
 
     }
 
