@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ import com.example.shopster.LoginActivity;
 import com.example.shopster.R;
 import com.example.shopster.data.FakeApi;
 import com.example.shopster.data.util.DataUtil;
+import com.example.shopster.model.CartUnit;
 import com.example.shopster.model.HeightWrapViewPager;
 import com.example.shopster.model.Product;
 import com.example.shopster.model.ProductReview;
@@ -52,17 +55,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ProductDetailsFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference cartsRef = database.getReference("cart");
     List<String> users = new ArrayList<>();
 
 
@@ -78,7 +85,6 @@ public class ProductDetailsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_product_details, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -128,6 +134,7 @@ public class ProductDetailsFragment extends Fragment {
 
         List<Review> reviews = new ArrayList<>();
         reviewsRef.child(pos).addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<ProductReview> productReviews = new ArrayList<>();
@@ -143,6 +150,7 @@ public class ProductDetailsFragment extends Fragment {
                             final Review review = snapshot.getValue(Review.class);
                             DatabaseReference userRef = database.getReference("user");
                             userRef.child(s.getUser()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
                                 @Override
                                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                                     if(task.isSuccessful()){
@@ -193,25 +201,88 @@ public class ProductDetailsFragment extends Fragment {
                 else{
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
-                    Rect displayRectangle = new Rect();
-                    Window window = getActivity().getWindow();
-                    window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.CustomAlertDialog);
-                    ViewGroup viewGroup = view.findViewById(android.R.id.content);
-                    View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.activity_login, viewGroup, false);
-                    dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
-                    dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
-                    builder.setView(dialogView);
-                    final AlertDialog alertDialog = builder.create();
-//                    Button buttonOk=dialogView.findViewById(R.id.buttonOk);
-//                    buttonOk.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            alertDialog.dismiss();
-//                        }
-//                    });
-                    alertDialog.show();
+//                    Rect displayRectangle = new Rect();
+//                    Window window = getActivity().getWindow();
+//                    window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+//                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.CustomAlertDialog);
+//                    ViewGroup viewGroup = view.findViewById(android.R.id.content);
+//                    View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.activity_login, viewGroup, false);
+//                    dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
+//                    dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
+//                    builder.setView(dialogView);
+//                    final AlertDialog alertDialog = builder.create();
+////                    Button buttonOk=dialogView.findViewById(R.id.buttonOk);
+////                    buttonOk.setOnClickListener(new View.OnClickListener() {
+////                        @Override
+////                        public void onClick(View v) {
+////                            alertDialog.dismiss();
+////                        }
+////                    });
+//                    alertDialog.show();
                 }
+            }
+        });
+
+        LinearLayout buttonBar = getActivity().findViewById(R.id.button_bar_buy_add);
+
+        Button addToCart = buttonBar.findViewById(R.id.btnAdd);
+
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference usersRef = database.getReference("user/");
+                String username = mAuth.getCurrentUser().getEmail();
+                Query query = usersRef.orderByChild("username").equalTo(username);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot u : snapshot.getChildren()){
+                            User user = u.getValue(User.class);
+                            String cartId = user.getCart();
+                            List<CartUnit> products = new ArrayList();
+                            DatabaseReference cartRef = database.getReference("cart/" + cartId);
+                            cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.N)
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(!snapshot.hasChild("products")){
+                                        products.add(new CartUnit(pos, 1));
+                                        cartsRef.child(cartId).child("products").setValue(products);
+                                    }
+                                    else{
+                                        boolean updated = false;
+                                        for(DataSnapshot unit : snapshot.child("products").getChildren()){
+                                            if(unit.child("product").getValue().equals(pos)){
+                                                products
+                                                        .add(new CartUnit(unit.child("product").getValue().toString(), Math.toIntExact((Long) unit.child("quantity").getValue() + 1)));
+                                                updated = true;
+                                            }
+                                            else{
+                                                products.add(new CartUnit(unit.child("product").getValue().toString(), Math.toIntExact((Long) unit.child("quantity").getValue())));
+                                            }
+                                        }
+                                        if(!updated){
+                                            products.add(new CartUnit(pos, 1));
+                                        }
+                                        cartsRef.child(cartId).child("products").setValue(products);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                            }
+
+                        }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }

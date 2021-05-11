@@ -37,6 +37,7 @@ public class AccountFragment extends Fragment {
     private FirebaseAuth mAuth;
     private ProductDetailsViewModel productDetailsViewModel;
     private View view;
+    int count = 0;
 
     @Override
     public void onStart() {
@@ -118,11 +119,13 @@ public class AccountFragment extends Fragment {
                 .setContentText("Hello. I am notification. Click me!")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(pendingIntent)
+                .setNumber(count)
 //                .setChannelId("id1")
 //                .setVibrate(new long[]{Notification.DEFAULT_VIBRATE})
                 .setPriority(Notification.PRIORITY_HIGH)
 //                .setCategory(NotificationCompat.CATEGORY_CALL)
                 .build();
+
 
         // Cancel the notification after its selected
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -142,6 +145,7 @@ public class AccountFragment extends Fragment {
 // notificationId is a unique int for each notification that you must define
         NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notification);
+        count++;
 
     }
 
