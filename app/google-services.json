@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:392815909846:android:42577a46e988b26cd3e277",
+        "mobilesdk_app_id": "1:392815909846:android:47624eafaff7c614d3e277",
         "android_client_info": {
           "package_name": "com.example.shopster"
         }
@@ -28,7 +28,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "392815909846-hnqm3vddeglei0e0g5u96d7t7kc6o8nc.apps.googleusercontent.com",
+              "client_id": "392815909846-4d9biabflr7plti7a8gr8oehknssfmag.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -57,7 +57,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "392815909846-hnqm3vddeglei0e0g5u96d7t7kc6o8nc.apps.googleusercontent.com",
+              "client_id": "392815909846-4d9biabflr7plti7a8gr8oehknssfmag.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

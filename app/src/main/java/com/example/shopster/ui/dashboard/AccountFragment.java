@@ -22,6 +22,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.shopster.LoginActivity;
 import com.example.shopster.MainActivity;
@@ -31,9 +32,11 @@ import com.example.shopster.ui.home.HomeFragment;
 import com.example.shopster.ui.notifications.NotificationsFragment;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AccountFragment extends Fragment {
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth;
     private ProductDetailsViewModel productDetailsViewModel;
     private View view;
@@ -71,6 +74,23 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.btnWishList).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(AccountFragment.this)
+                        .navigate(R.id.action_navigation_dashboard_to_wishListFragment);
+            }
+        });
+
+        view.findViewById(R.id.beaconDisc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(AccountFragment.this)
+                        .navigate(R.id.action_navigation_dashboard_to_beaconNotificationsFragment);
+            }
+        });
+
         view.findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,46 +122,48 @@ public class AccountFragment extends Fragment {
 //            notificationManager.createNotificationChannel(channel);
 //
 //        }
+//
+//        Intent intent = new Intent(getContext(), MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//
 
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
 //        stackBuilder.addNextIntentWithParentStack(intent);
 
 //        Intent mainIntent = new Intent(getContext(), MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
-
-        Notification notification = new NotificationCompat.Builder(getContext(), "id1")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("New Notification")
-                .setContentText("Hello. I am notification. Click me!")
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(pendingIntent)
-//                .setChannelId("id1")
-//                .setVibrate(new long[]{Notification.DEFAULT_VIBRATE})
-                .setPriority(Notification.PRIORITY_HIGH)
-//                .setCategory(NotificationCompat.CATEGORY_CALL)
-                .build();
-
-        // Cancel the notification after its selected
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-//        NotificationCompat.Builder builder1 = new NotificationCompat.Builder(getContext(), "id1")
-//                .setSmallIcon(R.drawable.ic_home_black_24dp)
-//                .setContentTitle("My notification")
-//                .setContentText("Hello World!")
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                // Set the intent that will fire when the user taps the notification
+//        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+//
+//        Notification notification = new NotificationCompat.Builder(getContext(), "id1")
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("New Notification")
+//                .setContentText("Hello. I am notification. Click me!")
+//                .setDefaults(Notification.DEFAULT_ALL)
 //                .setContentIntent(pendingIntent)
-//                .setAutoCancel(true);
-
-
-
-
-// notificationId is a unique int for each notification that you must define
-        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notification);
+////                .setChannelId("id1")
+////                .setVibrate(new long[]{Notification.DEFAULT_VIBRATE})
+//                .setPriority(Notification.PRIORITY_HIGH)
+////                .setCategory(NotificationCompat.CATEGORY_CALL)
+//                .build();
+//
+//        // Cancel the notification after its selected
+//        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//
+////        NotificationCompat.Builder builder1 = new NotificationCompat.Builder(getContext(), "id1")
+////                .setSmallIcon(R.drawable.ic_home_black_24dp)
+////                .setContentTitle("My notification")
+////                .setContentText("Hello World!")
+////                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+////                // Set the intent that will fire when the user taps the notification
+////                .setContentIntent(pendingIntent)
+////                .setAutoCancel(true);
+//
+//
+//
+//
+//// notificationId is a unique int for each notification that you must define
+//        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(1, notification);
 
     }
 

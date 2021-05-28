@@ -30,6 +30,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private static int RC_SIGN_IN = 23;
     private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onStart() {

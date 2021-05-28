@@ -47,7 +47,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     class NotificationViewHolder extends RecyclerView.ViewHolder {
-        private TextView fromNotification, dateTimeNotification;
+        private TextView fromNotification, dateTimeNotification, message;
         private ImageView imgNotification;
         private View view;
 
@@ -55,27 +55,29 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             super(itemView);
 
             fromNotification = (TextView) itemView.findViewById(R.id.txtFrom);
+            message = (TextView) itemView.findViewById(R.id.txtMessaage);
             dateTimeNotification = (TextView) itemView.findViewById(R.id.txtNotificationDateTime);
             imgNotification = (ImageView) itemView.findViewById(R.id.imgNotification);
             view = itemView;
         }
 
         public void bindData(final Notification notification) {
-            fromNotification.setText(notification.getNotificationId() + notification.getMessage());
+            fromNotification.setText("Notification from " + notification.getSenderId());
+            message.setText(notification.getMessage());
             imgNotification.setImageResource(R.drawable.g305);
             dateTimeNotification.setText(notification.getDateTime().toString());
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    notificationClickListener.onItemClicked(getAdapterPosition());
+                    notificationClickListener.onItemClicked(notification.getNotificationType());
                 }
             });
 
             imgNotification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(view.getContext(), "you clicked on image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "Going to stores with discount!", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -83,7 +85,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public interface NotificationClickListener{
-        void onItemClicked(int position);
+        void onItemClicked(String position);
     }
 
     public void setItemClickListener(NotificationClickListener notificationClickListener) {
