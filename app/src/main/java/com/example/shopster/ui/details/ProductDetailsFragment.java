@@ -30,8 +30,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
+
 
 import com.bumptech.glide.Glide;
 import com.example.shopster.LoginActivity;
@@ -41,6 +40,12 @@ import com.example.shopster.data.util.DataUtil;
 import com.example.shopster.model.CartUnit;
 import com.example.shopster.model.HeightWrapViewPager;
 import com.example.shopster.model.Product;
+import com.example.shopster.model.Review;
+import com.example.shopster.model.adapter.ReviewAdapter;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import com.example.shopster.model.ProductReview;
 import com.example.shopster.model.Review;
 import com.example.shopster.model.User;
@@ -95,6 +100,7 @@ public class ProductDetailsFragment extends Fragment {
 
         TextView tvProductName, tvPrice, tvDescription;
         HeightWrapViewPager viewPager;
+
 
 
         tvProductName = view.findViewById(R.id.txtProductName);
@@ -328,20 +334,41 @@ public class ProductDetailsFragment extends Fragment {
     }
 
 
-    private List<Review> func(String reviewId, List<Review> reviews) {
-        DatabaseReference review = database.getReference("review");
-        review.child(reviewId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final Review review = snapshot.getValue(Review.class);
-//                reviews.add(new Review(review.getComment(), review.getRating(), "datetime"));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return reviews;
-    }
+//    private List<Review> func(String reviewId, List<Review> reviews) {
+//        DatabaseReference review = database.getReference("review");
+//        review.child(reviewId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                final Review review = snapshot.getValue(Review.class);
+////                reviews.add(new Review(review.getComment(), review.getRating(), "datetime"));
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//
+//        RecyclerView reviewRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_review);
+//
+//        ReviewAdapter reviewAdapter = new ReviewAdapter(new ArrayList<>());
+//        reviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        reviewRecyclerView.setAdapter(reviewAdapter);
+//
+//        List<Review> reviews = new ArrayList<>();
+//        reviews.add(new Review("id1", "very good", 5, ZonedDateTime.now()));
+//        reviews.add(new Review("id2", "not so bad", 3, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//        reviews.add(new Review("id3", "very good", 4, ZonedDateTime.now()));
+//
+//        reviewAdapter.updateData(reviews);
+//
+//            }
+//        });
+//    }
 }
