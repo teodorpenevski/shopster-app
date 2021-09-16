@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 23;
+    private static int RC_REGISTER = 24;
     private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
 
@@ -113,13 +114,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
-
-                if(email.isEmpty() || password.isEmpty()){
-                    return;
-                }
-                registerWithEMail(email, password);
+                startActivityForResult(new Intent(getApplicationContext(), RegisterActivity.class), RC_REGISTER);
             }
         });
 
@@ -215,6 +210,9 @@ public class LoginActivity extends AppCompatActivity {
                 // ...
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        }
+        else if(requestCode == RC_REGISTER){
+            updateUI();
         }
     }
 
