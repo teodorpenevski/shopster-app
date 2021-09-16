@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shopster.R;
+import com.example.shopster.model.Product;
 import com.example.shopster.model.Review;
 
 import java.util.List;
@@ -36,7 +37,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public int getItemCount() {
-        return 0;
+        return reviews.size();
+    }
+
+    public void updateData(List<Review> reviews) {
+        this.reviews = reviews;
+        this.notifyDataSetChanged();
     }
 
     public class ReviewViewHolder extends RecyclerView.ViewHolder {
@@ -58,7 +64,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             user.setText(review.getUserId());
             comment.setText(review.getComment());
             dateTime.setText(review.getDateTime().toString());
-            rating.setText(review.getRating());
+            rating.setText(String.valueOf(review.getRating()));
+            userImg.setImageResource(R.drawable.g305);
         }
     }
 }
