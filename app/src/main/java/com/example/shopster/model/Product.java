@@ -10,7 +10,7 @@ public class Product {
     private String id;
     private String name;
     private String description;
-    private String imageURL;
+    private List<String> imageURL;
     private double price;
     private double rating;
 
@@ -22,8 +22,7 @@ public class Product {
         this.reviewList = new ArrayList<>();
     }
 
-    public Product(String id, String name, String description, String imageURL, double price, double rating) {
-        this.id = id;
+    public Product(String name, String description, List<String> imageURL, double price, double rating) {
         this.name = name;
         this.description = description;
         this.imageURL = imageURL;
@@ -32,7 +31,7 @@ public class Product {
         this.reviewList = new ArrayList<>();
     }
 
-    public String getImageURL() {
+    public List<String> getImageURL() {
         return imageURL;
     }
 
@@ -58,5 +57,45 @@ public class Product {
 
     public void addReview(Review review){
         reviewList.add(review);
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setImageURL(List<String> imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
     }
 }

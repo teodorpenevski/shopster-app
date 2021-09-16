@@ -33,4 +33,8 @@ public class Review {
     public ZonedDateTime getDateTime() {
         return dateTime;
     }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

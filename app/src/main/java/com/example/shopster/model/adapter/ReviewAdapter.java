@@ -62,10 +62,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
         public void bindData(final Review review){
             user.setText(review.getUserId());
+            userImg.setImageResource(R.drawable.common_google_signin_btn_text_light);
             comment.setText(review.getComment());
             dateTime.setText(review.getDateTime().toString());
             rating.setText(String.valueOf(review.getRating()));
             userImg.setImageResource(R.drawable.g305);
+
         }
     }
 }

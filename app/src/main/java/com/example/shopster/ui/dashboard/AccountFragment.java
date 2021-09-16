@@ -29,19 +29,38 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.shopster.LoginActivity;
 import com.example.shopster.MainActivity;
 import com.example.shopster.MainActivity2;
 import com.example.shopster.R;
 import com.example.shopster.dialogs.LoginDialog;
 import com.example.shopster.ui.home.HomeFragment;
 import com.example.shopster.ui.notifications.NotificationsFragment;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AccountFragment extends Fragment {
 
+    private FirebaseAuth mAuth;
     private ProductDetailsViewModel productDetailsViewModel;
+    private View view;
+    int count = 0;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            view.findViewById(R.id.btnLogin).setVisibility(View.GONE);
+        }
+        else{
+            view.findViewById(R.id.btnLogin).setVisibility(View.VISIBLE);
+
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
         productDetailsViewModel =
                 new ViewModelProvider(this).get(ProductDetailsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
@@ -52,31 +71,34 @@ public class AccountFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        view = root;
         return root;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Rect displayRectangle = new Rect();
-        Window window = getActivity().getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.CustomAlertDialog);
-        ViewGroup viewGroup = view.findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.login_dialog, viewGroup, false);
-        dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
-        dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-        Button buttonOk=dialogView.findViewById(R.id.buttonOk);
-        buttonOk.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog.dismiss();
+                if(mAuth.getCurrentUser() != null){
+                    Toast.makeText(getContext(), "Already logged in!", Toast.LENGTH_SHORT).show();
+                }
+                startActivity(new Intent(getContext(), LoginActivity.class));
             }
         });
-        alertDialog.show();
+
+
+        view.findViewById(R.id.btnLogout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                LoginManager.getInstance().logOut();
+                Toast.makeText(getContext(), "Logged out successfully!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+        });
 //        createNotificationChannel();
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
